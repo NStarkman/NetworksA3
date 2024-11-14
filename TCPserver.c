@@ -27,20 +27,6 @@ static void sigintCatcher(int signal,  siginfo_t* si, void *arg)
 	exit(0);
 }
 
-char* get_unique_filename(const char* filename) {
-	char* unique_filename = malloc(strlen(filename) + 100);
-	printf("filename: %s\n", filename);
-	strcpy(unique_filename, filename);
-	FILE* file = fopen(unique_filename, "rb");
-	int count = 1;
-	while (file != NULL) {
-		fclose(file);
-		sprintf(unique_filename, "%s(%d)", filename, count++);
-		file = fopen(unique_filename, "rb");
-	}
-	return unique_filename;
-}
-
 int main(int argc, char *argv[])
 {
 	if (argc < 2) {
@@ -111,7 +97,6 @@ int main(int argc, char *argv[])
 		}
 		buffer[len] = '\0';
 		char* fileName = strdup(buffer);
-		//char* uniqueFileName = get_unique_filename(fileName);
 		printf("fileName = %s\n", fileName);
 
 
@@ -121,7 +106,6 @@ int main(int argc, char *argv[])
 			perror("Error opening file");
 			close(consocket);
 			free(fileName);
-			//free(uniqueFileName);
 			continue;
 		}
 
@@ -135,13 +119,11 @@ int main(int argc, char *argv[])
 		fclose(file);
 		close(consocket);
 
-		//printf("Received file: %s\n", uniqueFileName);
 		printf("Total size: %d bytes\n", totalBytesReceived);
 		printf("Received from: %s\n", inet_ntoa(dest.sin_addr));
 		printf("Buffer size: %d bytes\n", bufSize);
 
 		free(fileName);
-		//free(uniqueFileName);
 	}
 
 	close(mysocket);
