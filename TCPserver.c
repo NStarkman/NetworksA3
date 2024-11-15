@@ -15,6 +15,7 @@
 #include <sys/socket.h>
 
 #define DEFAULT_BUFSIZE 4096
+#define MAX_FILENAME_LEN 100
 
 int mysocket;            // socket used to listen for incoming connections
 int consocket;
@@ -27,6 +28,31 @@ static void sigintCatcher(int signal,  siginfo_t* si, void *arg)
 	close(mysocket);
 	exit(0);
 }
+
+int file_exists(const char *filename) {
+    return access(filename, F_OK) == 0;
+}
+
+// Generate a unique filename if it already exists
+void get_unique_filename(char *filename) {
+    if (!file_exists(filename)) return;
+
+    char unique_filename[MAX_FILENAME_LEN];
+    int counter = 1;
+    char *dot = strrchr(filename, '.');
+
+    do {
+        if (dot) {
+            snprintf(unique_filename, MAX_FILENAME_LEN, "%.*s(%d)%s",
+                     (int)(dot - filename), filename, counter++, dot);
+        } else {
+            snprintf(unique_filename, MAX_FILENAME_LEN, "%s(%d)", filename, counter++);
+        }
+    } while (file_exists(unique_filename));
+
+    strncpy(filename, unique_filename, MAX_FILENAME_LEN);
+}
+
 
 int main(int argc, char *argv[])
 {
@@ -102,11 +128,13 @@ int main(int argc, char *argv[])
 		}
 		buffer[len] = '\0';
 		char* fileName = strdup(buffer);
+
+		get_unique_filename(fileName);
+
 		printf("fileName = %s\n", fileName);
 
-
 		// Open the file for writing
-		FILE* file = fopen("output", "wb"); // filename --> output
+		FILE* file = fopen(fileName, "wb"); // filename --> output
 		if (file == NULL) {
 			perror("Error opening file");
 			close(consocket);
