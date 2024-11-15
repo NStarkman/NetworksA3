@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -g
+CFLAGS = -Wall -std=c99
 
 CLIENT_TARGET = sendFile
 SERVER_TARGET = server
@@ -13,15 +13,16 @@ SERVER_OBJS = $(SERVER_SRCS:.c=.o)
 all: $(CLIENT_TARGET) $(SERVER_TARGET)
 
 $(CLIENT_TARGET): $(CLIENT_OBJS)
-    $(CC) $(CFLAGS) -o $(CLIENT_TARGET) $(CLIENT_OBJS)
+	$(CC) $(CFLAGS) -o $(CLIENT_TARGET) $(CLIENT_OBJS)
 
 $(SERVER_TARGET): $(SERVER_OBJS)
-    $(CC) $(CFLAGS) -o $(SERVER_TARGET) $(SERVER_OBJS)
+	$(CC) $(CFLAGS) -o $(SERVER_TARGET) $(SERVER_OBJS)
 
 %.o: %.c
-    $(CC) $(CFLAGS) -c $<
+	$(CC) $(CFLAGS) -c $<
 
 clean:
-    rm -f $(CLIENT_OBJS) $(SERVER_OBJS) $(CLIENT_TARGET) $(SERVER_TARGET)
+	rm -f $(CLIENT_OBJS) $(SERVER_OBJS) $(CLIENT_TARGET) $(SERVER_TARGET)
 
-.PHONY: all clean
+.PHONY: 
+	all clean
