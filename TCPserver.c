@@ -1,3 +1,4 @@
+// 50570
 // gcc -Wall -std=c99 TCPclient.c -o sendFile
 // gcc -Wall -std=c99 TCPserver.c -o server
 
@@ -59,6 +60,8 @@ int main(int argc, char *argv[])
 
 	// Create a socket.
 	mysocket = socket(AF_INET, SOCK_STREAM, 0);
+	if (mysocket == -1)
+		printf("Issue with socket | errno = %d\n", errno);
 
 	// bind serv information to mysocket
 	int flag = 1;
@@ -76,7 +79,9 @@ int main(int argc, char *argv[])
 	}
 
 	// start listening, allowing a queue of up to 1 pending connection
-	listen(mysocket, 1);
+	int listened = listen(mysocket, 1);
+	if (listened == -1)
+		printf("Issue listening | errno = %d\n", errno);
 
 	while (1) {
 		// Create a socket to communicate with the client that just connected

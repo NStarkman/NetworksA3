@@ -6,6 +6,7 @@
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
+#include <errno.h> // included for error handling
 
 #define MAXRCVLEN 4096
 
@@ -31,6 +32,8 @@ int main(int argc, char *argv[])
 
 	// Create a socket.
 	mysocket = socket(AF_INET, SOCK_STREAM, 0);
+	if (mysocket == -1)
+		printf("Issue with socket | errno = %d\n", errno);
 
 	memset(&dest, 0, sizeof(dest)); // zero the struct
 	memset(&src, 0, sizeof(src)); // zero the struct
@@ -41,7 +44,9 @@ int main(int argc, char *argv[])
 	dest.sin_port = htons(port); // Set destination port number
 
 	// Connect to the server
-	connect(mysocket, (struct sockaddr *)&dest, sizeof(struct sockaddr_in));
+	int connected = connect(mysocket, (struct sockaddr *)&dest, sizeof(struct sockaddr_in));
+	if (connected == -1)
+		printf("Issue connecting | errno = %d\n", errno);
 	socklen_t sLen = sizeof(src);
 	getsockname(mysocket, (struct sockaddr *) &src, &sLen);
 
@@ -51,7 +56,9 @@ int main(int argc, char *argv[])
 	// Send the file name
 	int fileNameLen = strlen(fileName) + 1; // Include null terminator
 	//send(mysocket, &fileNameLen, sizeof(fileNameLen), 0); // Send the length of the file name
-	send(mysocket, fileName, fileNameLen, 0); // Send the file name
+	int sent = send(mysocket, fileName, fileNameLen, 0); // Send the file name
+	if (sent == -1)
+		printf("Issue sending data | errno = %d\n", errno);
 
 	// Open the file
 	FILE *file = fopen(fileName, "rb");
