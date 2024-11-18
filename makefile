@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -std=c99
+CFLAGS = -Wall
 
 CLIENT_TARGET = sendFile
 SERVER_TARGET = server
