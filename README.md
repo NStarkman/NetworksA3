@@ -31,4 +31,8 @@
         python3 test_runner.py Server
      ```
      
-     
+
+4. Clean
+  ```
+    make clean
+  ```
