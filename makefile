@@ -4,8 +4,8 @@ CFLAGS = -Wall
 CLIENT_TARGET = sendFile
 SERVER_TARGET = server
 
-CLIENT_SRCS = TCPclient.c
-SERVER_SRCS = TCPserver.c
+CLIENT_SRCS = client.c
+SERVER_SRCS = server.c
 
 CLIENT_OBJS = $(CLIENT_SRCS:.c=.o)
 SERVER_OBJS = $(SERVER_SRCS:.c=.o)
