@@ -68,7 +68,7 @@ def main():
     args = parser.parse_args()
 
     client_command = [
-        "./client",
+        "./sendFile",
         args.file_path,
         f"{args.server_address}:{args.port}",
         str(args.buf_size)

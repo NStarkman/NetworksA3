@@ -34,7 +34,7 @@ int file_exists(const char *filename) {
 }
 
 // Generate a unique filename if it already exists
-void get_unique_filename(char *filename) {
+void get_unique_filename(char *filename , char *newFileName) {
     if (!file_exists(filename)) return;
 
     char unique_filename[MAX_FILENAME_LEN];
@@ -50,7 +50,7 @@ void get_unique_filename(char *filename) {
         }
     } while (file_exists(unique_filename));
 
-    strncpy(filename, unique_filename, MAX_FILENAME_LEN);
+	strncpy(newFileName, unique_filename, MAX_FILENAME_LEN);
 }
 
 
@@ -128,19 +128,20 @@ int main(int argc, char *argv[])
 		}
 		buffer[len] = '\0';
 		char* fileName = strdup(buffer);
+        char uniqueName[MAX_FILENAME_LEN];
 
-		get_unique_filename(fileName);
+        get_unique_filename(fileName, uniqueName);
 
-		printf("fileName = %s\n", fileName);
+        printf("fileName = %s\n", uniqueName);
 
-		// Open the file for writing
-		FILE* file = fopen(fileName, "wb"); // filename --> output
-		if (file == NULL) {
-			perror("Error opening file");
-			close(consocket);
-			free(fileName);
-			continue;
-		}
+        // Open the file for writing
+        FILE* file = fopen(uniqueName, "wb"); // filename --> output
+        if (file == NULL) {
+            perror("Error opening file");
+            close(consocket);
+            free(fileName);
+            continue;
+        }
 
 		// Receive the file contents
 		int totalBytesReceived = 0;
