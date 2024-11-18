@@ -8,6 +8,8 @@ def runCommand(command):
     return command.stdout.strip()
 
 def main():
+    timeArr = []
+
     if len(sys.argv)<2:
         print("TOO SMALL")
         sys.exit(1)
@@ -24,13 +26,21 @@ def main():
             startTime = time.time()
             runCommand(localCommand)
             endTime = time.time()
-            print(endTime - startTime)
+            timeArr.append(endTime - startTime)
         elif (sys.argv[1]=="Server"):
-            localCommand = "./sendFile " + serverArgs
+            localCommand = "./sendFile " + LocalArgs
             startTime = time.time()
             runCommand(localCommand)
             endTime = time.time()
-            print(endTime - startTime)
+            timeArr.append(endTime - startTime)
+
+    sum = 0
+    for i in timeArr:
+        sum += i
+
+    print("Min time: " + str(min(timeArr)))
+    print("Average time: " + str(sum/len(timeArr)))
+    print("Max time: " + str(max(timeArr)))
 
 if __name__ == "__main__":
     main()
