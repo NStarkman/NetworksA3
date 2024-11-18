@@ -15,7 +15,7 @@
 #include <sys/socket.h>
 
 #define DEFAULT_BUFSIZE 4096
-#define MAX_FILENAME_LEN 100
+#define MAX_FILENAME_LEN 256
 
 int mysocket;            // socket used to listen for incoming connections
 int consocket;
