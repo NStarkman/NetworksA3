@@ -30,7 +30,7 @@ def main():
             timeArr.append(endTime - startTime)
             transferRate.append(69855/(endTime - startTime))
         elif (sys.argv[1]=="Server"):
-            localCommand = "./sendFile " + LocalArgs
+            localCommand = "./sendFile " + serverArgs
             startTime = time.time()
             runCommand(localCommand)
             endTime = time.time()
@@ -44,7 +44,7 @@ def main():
     transferSum = 0
     for i in transferRate:
         transferSum += i
-        
+
     print()
     print("Min time: " + str(min(timeArr)))
     print("Average time: " + str(sum/len(timeArr)))
